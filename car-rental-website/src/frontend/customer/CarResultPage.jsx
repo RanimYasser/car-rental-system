@@ -25,7 +25,7 @@ const CarResultsPage = () => {
 
   const [brandFilter, setBrandFilter] = useState('');
   const [colorFilter, setColorFilter] = useState('');
-  const [modelFilter, setModelFilter] = useState('');
+  const [yearFilter, setModelFilter] = useState('');
 
   const navigate = useNavigate();
   const pickupDate = sessionStorage.getItem('pickupDate');
@@ -71,12 +71,12 @@ const CarResultsPage = () => {
         (car) =>
           (brandFilter === '' || car.brand === brandFilter) &&
           (colorFilter === '' || car.color === colorFilter) &&
-          (modelFilter === '' || car.year.toString() === modelFilter)
+          (yearFilter === '' || car.year === yearFilter)
       );
       setFilteredCars(filtered);
     };
     applyFilters();
-  }, [brandFilter, colorFilter, modelFilter, cars]);
+  }, [brandFilter, colorFilter, yearFilter, cars]);
 
   if (loading) {
     return (
@@ -195,9 +195,9 @@ const CarResultsPage = () => {
 
             <Grid item xs={12} sm={4}>
               <FormControl fullWidth>
-                <InputLabel sx={{ color: '#fff' }}>Model</InputLabel>
+                <InputLabel sx={{ color: '#fff' }}>Year</InputLabel>
                 <Select
-                  value={modelFilter}
+                  value={yearFilter}
                   onChange={(e) => setModelFilter(e.target.value)}
                   sx={{
                     backgroundColor: '#333',

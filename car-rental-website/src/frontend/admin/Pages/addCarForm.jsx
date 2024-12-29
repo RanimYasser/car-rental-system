@@ -67,7 +67,7 @@ export default function AddCarForm() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundImage: `url(${imageUrl})`, // Set background image
+          backgroundImage: `url(${imageUrl})`, 
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -81,7 +81,7 @@ export default function AddCarForm() {
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
             zIndex: 1,
           }}
         />
@@ -92,7 +92,7 @@ export default function AddCarForm() {
             maxWidth: 400,
             width: '100%',
             backdropFilter: 'blur(4px)',
-            backgroundColor: 'rgba(55, 53, 53, 0.7)', // Semi-transparent Paper background
+            backgroundColor: 'rgba(55, 53, 53, 0.7)', 
             borderRadius: 3,
             zIndex: 2,
           }}

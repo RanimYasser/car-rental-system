@@ -9,10 +9,9 @@ import ConfirmationPage from './frontend/customer/confirmationPage';
 import AdminHomePage from './frontend/admin/Pages/AdminHomePage/AdminHomePage';
 import AddCarForm from './frontend/admin/Pages/AddCarForm';
 import CreateReports from './frontend/admin/Pages/CreateReports';
-import updateCarStaus from './frontend/admin/Pages/updateCarStaus';
+import UpdateCarStatus from './frontend/admin/Pages/updateCarStaus';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
 function App() {
   return (
     <>
@@ -28,8 +27,8 @@ function App() {
           <Route path ="/AdminHomePage"element={<AdminHomePage/>}/>
        <Route path= "/AddCarForm" element={<AddCarForm/>}/>
           <Route path ="/report"element={<CreateReports/>}/>
-          <Route path ="/update car status"element={<updateCarStaus/>}/>
-          
+          <Route path ="/update car status"element={<UpdateCarStatus/>}/>
+
         </Routes>
       </Router>
     </>

@@ -25,7 +25,7 @@ function Navbar() {
                 <ul style={{ listStyleType: 'none', display: 'flex', margin: '0', padding: '0', fontSize: '30px' }}>
                     <li style={{ margin: '0 20px' }}><Link to="/addCarForm" style={{ textDecoration: 'none', color: 'white' }}>Add car</Link></li>
                     <li style={{ margin: '0 20px' }}><Link to="/report" style={{ textDecoration: 'none', color: 'white' }}>Create report </Link></li>
-                    <li style={{ margin: '0 20px' }}><Link to="/updateCarStatus" style={{ textDecoration: 'none', color: 'white' }}>Update car status </Link></li>
+                    <li style={{ margin: '0 20px' }}><Link to="/update car status" style={{ textDecoration: 'none', color: 'white' }}>Update car status </Link></li>
                 </ul>
             </div>
         </nav>

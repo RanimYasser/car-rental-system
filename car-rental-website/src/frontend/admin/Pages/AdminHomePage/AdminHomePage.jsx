@@ -1,8 +1,13 @@
-import React from 'react'
-
+import React from 'react';
+import Navbar from '../../SharedComponents/Navbar';
+import HeroSection from './heroSection';
 function AdminHomePage() {
   return (
-    <div>AdminHomePage</div>
+    <>
+    <Navbar/>
+    <HeroSection/>
+
+</>
   )
 }
 

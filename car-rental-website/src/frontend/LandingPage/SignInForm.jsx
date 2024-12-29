@@ -1,21 +1,30 @@
 import React, { useState } from 'react';
-import { TextField, Button, Paper, Typography, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@mui/material";
-import { useNavigate } from 'react-router-dom'; 
+import { TextField, Link, Button, Paper, Typography, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Snackbar, Alert } from '@mui/material';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
-import axios from 'axios';
 import { Box } from '@mui/system';
-import theme from '../../theme.js'; 
+import axios from 'axios';
+import theme from '../../theme.js';
 
 export default function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('customer');
   const [error, setError] = useState('');
-  
+  const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
+
+    if (!email || !password) {
+      setError('Email and password are required.');
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await axios.post(
@@ -28,24 +37,24 @@ export default function SignInForm() {
       );
 
       if (response.data.status === 'success') {
-        alert(`Welcome, ${response.data.name || 'User'}!`);
-
-        // Navigate based on the selected role
-        if (role === 'admin') {
-          navigate('/AdminHomePage');
-        } else if (role === 'customer') {
-          navigate('/HomePage');
-        }
+        setSnackbar({ open: true, message: `Welcome, ${response.data.name || 'User'}!`, severity: 'success' });
+        navigate(role === 'admin' ? '/AdminHomePage' : '/HomePage');
       } else {
         setError(response.data.message || 'Login failed. Please try again.');
       }
     } catch (err) {
       console.error('Error during login:', err);
       setError('An error occurred. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const imageUrl = '/images/car2.jpg'; 
+  const handleSnackbarClose = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  const imageUrl = '/images/car2.jpg';
 
   return (
     <ThemeProvider theme={theme}>
@@ -105,6 +114,7 @@ export default function SignInForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               sx={{ mb: 3 }}
+              required
             />
             <TextField
               fullWidth
@@ -114,6 +124,7 @@ export default function SignInForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               sx={{ mb: 3 }}
+              required
             />
             <FormControl component="fieldset" fullWidth sx={{ mb: 3 }}>
               <FormLabel component="legend" sx={{ color: 'text.primary', fontWeight: 'bold' }}>
@@ -139,6 +150,7 @@ export default function SignInForm() {
               variant="contained"
               color="primary"
               fullWidth
+              disabled={loading}
               sx={{
                 py: 1.5,
                 fontSize: '1rem',
@@ -147,11 +159,30 @@ export default function SignInForm() {
                 mb: 3,
               }}
             >
-              Sign In
+              {loading ? 'Signing In...' : 'Sign In'}
             </Button>
           </form>
+          <Typography variant="body2" sx={{ textAlign: 'center' }}>
+            Don't have an account?{' '}
+            <Link
+              component={RouterLink}
+              to="/registration"
+              sx={{ textDecoration: 'none', fontWeight: 'bold', color: 'secondary.main' }}
+            >
+              Register
+            </Link>
+          </Typography>
         </Paper>
       </Box>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </ThemeProvider>
   );
 }

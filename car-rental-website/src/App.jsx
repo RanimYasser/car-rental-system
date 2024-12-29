@@ -7,6 +7,9 @@ import SignInForm from './frontend/LandingPage/signInForm';
 import ReserveCarForm from './frontend/customer/ReserveCarForm';
 import ConfirmationPage from './frontend/customer/confirmationPage';
 import AdminHomePage from './frontend/admin/Pages/AdminHomePage/AdminHomePage';
+import AddCarForm from './frontend/admin/Pages/AddCarForm';
+import CreateReports from './frontend/admin/Pages/CreateReports';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -22,6 +25,9 @@ function App() {
           <Route path ="/car reservation"element={<ReserveCarForm/>}/>
           <Route path ="/confirmationPage"element={<ConfirmationPage/>}/>
           <Route path ="/AdminHomePage"element={<AdminHomePage/>}/>
+       <Route path= "/AddCarForm" element={<AddCarForm/>}/>
+          <Route path ="/report"element={<CreateReports/>}/>
+          <Route path ="/update car status"element={<updateCarStaus/>}/>
         </Routes>
       </Router>
     </>

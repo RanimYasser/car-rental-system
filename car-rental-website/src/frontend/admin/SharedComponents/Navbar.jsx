@@ -13,18 +13,19 @@ function Navbar() {
             position: 'fixed',
             top: 0,
             width: '100%',
-            zIndex: 1000 // Ensure navbar is above other content
+            zIndex: 1000,
+          
         }}>
             <div className="logo">
-                <Link to="/" style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', fontSize: '35px' }}>CarRental</Link>
+                <Link to="/" style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', fontSize: '35px' }}>Admin Page</Link>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center',marginRight:'60px' }}>
                 
             
                 <ul style={{ listStyleType: 'none', display: 'flex', margin: '0', padding: '0', fontSize: '30px' }}>
-                    <li style={{ margin: '0 20px' }}><Link to="/cars" style={{ textDecoration: 'none', color: 'white' }}>Catalog</Link></li>
-                    <li style={{ margin: '0 20px' }}><Link to="/reservations" style={{ textDecoration: 'none', color: 'white' }}>Reservations</Link></li>
-                   
+                    <li style={{ margin: '0 20px' }}><Link to="/addCarForm" style={{ textDecoration: 'none', color: 'white' }}>Add car</Link></li>
+                    <li style={{ margin: '0 20px' }}><Link to="/report" style={{ textDecoration: 'none', color: 'white' }}>Create report </Link></li>
+                    <li style={{ margin: '0 20px' }}><Link to="/updateCarStatus" style={{ textDecoration: 'none', color: 'white' }}>Update car status </Link></li>
                 </ul>
             </div>
         </nav>

@@ -1,5 +1,5 @@
 import React from 'react';
-import FilteringForm from './filteringForm';  // Corrected import to match the new component name
+import FilteringForm from './filteringForm';  
 function HomePage() {
   return (
     <>

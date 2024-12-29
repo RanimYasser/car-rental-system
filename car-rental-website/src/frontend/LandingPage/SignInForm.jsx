@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { TextField, Button, Paper, Typography, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Link } from "@mui/material";
-import { Link as RouterLink, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { TextField, Button, Paper, Typography, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@mui/material";
+import { useNavigate } from 'react-router-dom'; 
 import { ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { Box } from '@mui/system';
@@ -12,27 +12,30 @@ export default function SignInForm() {
   const [role, setRole] = useState('customer');
   const [error, setError] = useState('');
   
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     try {
-      const response = await axios.post('http://localhost/car-rental-website/login.php?action=login', {
-        email,
-        password,
-        role,
-      }, {
-        headers: {
-          'Content-Type': 'application/json', // Ensures JSON data is sent
-        },
-        withCredentials: true, // If you want to send cookies/session info
-      });
-  
+      const response = await axios.post(
+        'http://localhost/car-rental-website/auth.php?action=login',
+        { email, password, role },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      );
+
       if (response.data.status === 'success') {
         alert(`Welcome, ${response.data.name || 'User'}!`);
-        // Redirect or handle successful login here
-        navigate('/dashboard');  // Redirect to the dashboard after successful login
+
+        // Navigate based on the selected role
+        if (role === 'admin') {
+          navigate('/AdminHomePage');
+        } else if (role === 'customer') {
+          navigate('/HomePage');
+        }
       } else {
         setError(response.data.message || 'Login failed. Please try again.');
       }
@@ -41,8 +44,8 @@ export default function SignInForm() {
       setError('An error occurred. Please try again later.');
     }
   };
-  
-  const imageUrl = '/images/car2.jpg'; // Background image
+
+  const imageUrl = '/images/car2.jpg'; 
 
   return (
     <ThemeProvider theme={theme}>
@@ -67,7 +70,7 @@ export default function SignInForm() {
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
             zIndex: 1,
           }}
         />
@@ -78,7 +81,7 @@ export default function SignInForm() {
             maxWidth: 450,
             width: '100%',
             backdropFilter: 'blur(4px)',
-            backgroundColor: 'rgba(55, 53, 53, 0.7)', // Semi-transparent
+            backgroundColor: 'rgba(55, 53, 53, 0.7)',
             borderRadius: 3,
             zIndex: 2,
           }}
@@ -97,7 +100,7 @@ export default function SignInForm() {
           <form onSubmit={handleSubmit}>
             <TextField
               fullWidth
-              label="Email"
+              label="Email or Username"
               variant="outlined"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -131,34 +134,22 @@ export default function SignInForm() {
                 {error}
               </Typography>
             )}
-           <RouterLink to="/HomePage" style={{ textDecoration: 'none' }}>
-  <Button
-    type="submit"
-    variant="contained"
-    color="primary"
-    fullWidth
-    sx={{
-      py: 1.5,
-      fontSize: '1rem',
-      fontWeight: 'bold',
-      textTransform: 'none',
-      mb: 3,
-    }}
-  >
-    Sign In
-  </Button>
-</RouterLink>
-</form>
-          <Typography variant="body2" sx={{ textAlign: 'center' }}>
-            Don't have an account?{' '}
-            <Link
-              component={RouterLink}
-              to="/registration"
-              sx={{ textDecoration: 'none', fontWeight: 'bold', color: 'secondary.main' }}
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{
+                py: 1.5,
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                textTransform: 'none',
+                mb: 3,
+              }}
             >
-              Register
-            </Link>
-          </Typography>
+              Sign In
+            </Button>
+          </form>
         </Paper>
       </Box>
     </ThemeProvider>

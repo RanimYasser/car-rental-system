@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { TextField, Button, Paper, Typography, Box } from '@mui/material';
-import axios from 'axios'; // For backend communication
+import axios from 'axios'; 
 import { ThemeProvider } from '@mui/material/styles';
-import theme from '../../theme'; // Import your custom theme
+import theme from '../../theme';
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
-    name: '', // Combined name (first name + last name)
+    name: '', // Combined name (first name + last name) -> hattghayar
     email: '',
     phone: '',
     licenseNumber: '',
@@ -49,10 +49,10 @@ export default function RegisterForm() {
     }
 };
 
-  const imageUrl = '/images/car2.jpg'; // Path to the background image
+  const imageUrl = '/images/car2.jpg'; 
 
   return (
-    <ThemeProvider theme={theme}> {/* Wrap with ThemeProvider to apply the custom theme */}
+    <ThemeProvider theme={theme}>
       <Box
         sx={{
           position: 'relative',
@@ -60,7 +60,7 @@ export default function RegisterForm() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundImage: `url(${imageUrl})`, // Set background image
+          backgroundImage: `url(${imageUrl})`, 
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -74,7 +74,7 @@ export default function RegisterForm() {
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', 
             zIndex: 1,
           }}
         />
@@ -85,7 +85,7 @@ export default function RegisterForm() {
             maxWidth: 400,
             width: '100%',
             backdropFilter: 'blur(4px)',
-            backgroundColor: 'rgba(55, 53, 53, 0.7)', // Semi-transparent Paper background
+            backgroundColor: 'rgba(55, 53, 53, 0.7)', 
             borderRadius: 3,
             zIndex: 2,
           }}

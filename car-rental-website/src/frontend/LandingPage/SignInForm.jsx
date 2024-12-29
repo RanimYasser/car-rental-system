@@ -16,6 +16,7 @@ export default function SignInForm() {
 
   const navigate = useNavigate();
 
+ 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -37,8 +38,21 @@ export default function SignInForm() {
       );
 
       if (response.data.status === 'success') {
-        setSnackbar({ open: true, message: `Welcome, ${response.data.name || 'User'}!`, severity: 'success' });
-        navigate(role === 'admin' ? '/AdminHomePage' : '/HomePage');
+        sessionStorage.setItem('email', email);
+
+        if (role === 'customer') {
+          const customer = response.data.customer;
+          sessionStorage.setItem('email', email);
+          sessionStorage.setItem('customer', JSON.stringify(customer));
+          sessionStorage.setItem('license_number', customer.license_number);
+        
+          setSnackbar({ open: true, message: `Welcome, ${customer.name || 'User'}!`, severity: 'success' });
+          navigate('/HomePage', { state: { customer } }); 
+        }
+         else if (role === 'admin') {
+          setSnackbar({ open: true, message: 'Welcome, Admin!', severity: 'success' });
+          navigate('/AdminHomePage');
+        }
       } else {
         setError(response.data.message || 'Login failed. Please try again.');
       }
@@ -53,7 +67,6 @@ export default function SignInForm() {
   const handleSnackbarClose = () => {
     setSnackbar({ ...snackbar, open: false });
   };
-
   const imageUrl = '/images/car2.jpg';
 
   return (

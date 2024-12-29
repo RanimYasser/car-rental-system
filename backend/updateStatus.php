@@ -60,7 +60,7 @@ try {
                 :pickup_date > r.return_date OR :return_date < r.pickup_date
             )
         )
-        AND c.status = 'available'; -- Check if the car status is 'available'
+        AND c.status = 'active';
     ";
 
     $stmt = $db->prepare($query);

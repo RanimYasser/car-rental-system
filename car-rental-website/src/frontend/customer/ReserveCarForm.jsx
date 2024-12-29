@@ -11,6 +11,7 @@ const ReserveCarForm = () => {
   const pickupDate = location.state?.pickupDate || sessionStorage.getItem('pickupDate');
   const returnDate = location.state?.returnDate || sessionStorage.getItem('returnDate');
   const pickupLocation = location.state?.pickupLocation || sessionStorage.getItem('pickupLocation');
+  const loggedInLicenseNumber = sessionStorage.getItem('license_number'); 
   const [licenseNumber, setLicenseNumber] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -23,8 +24,8 @@ const ReserveCarForm = () => {
   };
 
   const handleConfirm = async () => {
-    if (!licenseNumber || !car.car_id || !car.office_id || !pickupDate || !returnDate) {
-      setError('Please fill all required fields.');
+    if (licenseNumber !== loggedInLicenseNumber) {
+      setError('The entered license number does not match your account.');
       return;
     }
 

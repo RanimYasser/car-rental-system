@@ -5,9 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const ConfirmationPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
+  
   const { car, licenseNumber, pickupDate,pickupLocation, returnDate, totalCost, reservationTimestamp } = location.state || {};
-
   if (!car || !licenseNumber || !pickupDate || !pickupLocation || !returnDate || !totalCost || !reservationTimestamp) {
     return (
       <Box sx={{ textAlign: 'center', padding: 4 }}>

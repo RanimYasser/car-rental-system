@@ -54,7 +54,7 @@ if ($_GET['action'] === 'login') {
         $user = $result->fetch_assoc();
         // Debug log
         file_put_contents('debug_log.txt', "User Found: " . print_r($user, true) . "\n", FILE_APPEND);
-
+    
         // Check password
         if (password_verify($password, $user['password'])) {
             echo json_encode([
@@ -62,17 +62,19 @@ if ($_GET['action'] === 'login') {
                 "message" => "Login successful",
                 "name" => $user['name'] ?? $user['username'],
                 "role" => $role,
+                "customer" => [
+                    "name" => $user['name'] ?? $user['username'],
+                    "email" => $email,
+                    "license_number" => $user['license_number'] ?? null
+                ]
             ]);
         } else {
             // Debug incorrect password
             file_put_contents('debug_log.txt', "Password Mismatch: Input Password: $password | DB Password: " . $user['password'] . "\n", FILE_APPEND);
             echo json_encode(["status" => "error", "message" => "Invalid password"]);
         }
-    } else {
-        // Debug user not found
-        file_put_contents('debug_log.txt', "User Not Found for $field: $email\n", FILE_APPEND);
-        echo json_encode(["status" => "error", "message" => "User not found"]);
     }
+    
 
     $stmt->close();
     $conn->close();

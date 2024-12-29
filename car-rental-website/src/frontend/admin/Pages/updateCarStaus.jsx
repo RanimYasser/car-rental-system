@@ -6,4 +6,4 @@ function updateCarStaus() {
   )
 }
 
-export default updateCarStaus
+export default updateCarStaus;

@@ -71,7 +71,7 @@ function getReservationReport($conn, $params) {
         $sql .= " AND r.pickup_date >= '$pickup_date'";
     }
     if ($return_date) {
-        $sql .= " AND r.return_date <= '$return_date'";
+        $sql .= " AND r.pickup_date <= '$return_date'";
     }
 
     $result = $conn->query($sql);
@@ -87,10 +87,9 @@ function getCarReservationReport($conn, $params) {
     $pickup_date = $params['pickup_date'] ?? null;
     $return_date = $params['return_date'] ?? null;
 
-    $sql = "SELECT r.*, car.*, c.name, c.phone 
+    $sql = "SELECT r.*, car.* 
             FROM Reservation r
             JOIN Car car ON r.car_id = car.car_id
-            JOIN Customer c ON r.license_number = c.license_number
             WHERE 1=1";
     if ($car_id) {
         $sql .= " AND car.car_id = '$car_id'";
@@ -99,7 +98,7 @@ function getCarReservationReport($conn, $params) {
         $sql .= " AND r.pickup_date >= '$pickup_date'";
     }
     if ($return_date) {
-        $sql .= " AND r.return_date <= '$return_date'";
+        $sql .= " AND r.pickup_date <= '$return_date'";
     }
 
     $result = $conn->query($sql);
@@ -113,21 +112,39 @@ function getCarReservationReport($conn, $params) {
 function getCarStatus($conn, $params) {
     $specific_date = $params['specific_date'] ?? null;
 
-    $sql = "SELECT car.*, 
-                   CASE 
-                       WHEN r.pickup_date <= '$specific_date' AND r.return_date >= '$specific_date' THEN 'rented' 
-                       ELSE car.status 
-                   END AS status_on_date
-            FROM Car car
-            LEFT JOIN Reservation r ON car.car_id = r.car_id
-            WHERE ('$specific_date' IS NULL OR ('$specific_date' BETWEEN r.pickup_date AND r.return_date))";
+    if ($specific_date) {
+        // Update the status in the Car table to "rented" if the car is reserved on the specific date
+        $updateSql = "
+            UPDATE car
+            SET status = 'rented'
+            WHERE car_id IN (
+                SELECT DISTINCT car.car_id
+                FROM car car
+                INNER JOIN Reservation r ON car.car_id = r.car_id
+                WHERE r.pickup_date <= '$specific_date' AND r.return_date >= '$specific_date'
+            )
+        ";
+
+        if (!$conn->query($updateSql)) {
+            return ['status' => 'error', 'message' => 'Failed to update car status: ' . $conn->error];
+        }
+    }
+
+    // Fetch the cars and their current status
+    $sql = "
+        SELECT * FROM car;
+    ";
 
     $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        echo json_encode(["status" => "success", "data" => $result->fetch_all(MYSQLI_ASSOC)]);
-    } else {
-        echo json_encode(["status" => "success", "data" => []]);
-    }
+
+    if ($result) {
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            echo json_encode(["status" => "success", "data" => $result->fetch_all(MYSQLI_ASSOC)]);
+        } else {
+            echo json_encode(["status" => "success", "data" => []]);
+        }
+}
 }
 
 function getCustomerReservations($conn, $params) {
@@ -158,7 +175,7 @@ function getDailyPayments($conn, $params) {
         $sql .= " AND r.pickup_date >= '$start_date'";
     }
     if ($end_date) {
-        $sql .= " AND r.return_date <= '$end_date'";
+        $sql .= " AND r.pickup_date <= '$end_date'";
     }
     $sql .= " GROUP BY DATE(r.pickup_date)";
 

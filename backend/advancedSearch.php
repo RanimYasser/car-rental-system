@@ -56,12 +56,9 @@ if (!empty($carInfo)) {
     error_log("Customer Info Search Query: " . $query);
 } elseif (!empty($reservationDate)) {
     // Search for reservations
-    $query = "SELECT r.reservation_id, r.pickup_date, r.return_date, r.payment_amount, 
-                     c.model AS car_model, cu.name AS customer_name
+    $query = "SELECT r.reservation_id, r.pickup_date, r.return_date, r.payment_amount
               FROM reservation r
-              INNER JOIN car c ON r.car_id = c.car_id
-              INNER JOIN customer cu ON r.license_number = cu.license_number
-              WHERE DATE(r.pickup_date) = ?";
+              WHERE r.reserve_date = ?";
     $types = 's';
     $params = [$reservationDate];
     error_log("Reservation Search Query: " . $query);
